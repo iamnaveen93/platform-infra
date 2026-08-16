@@ -1,0 +1,58 @@
+apiVersion: apps/v1
+kind: Deployment
+
+metadata:
+  name: shortlink-mysql
+  namespace: url-shortner
+
+spec:
+  replicas: 1
+
+  selector:
+    matchLabels:
+      app: shortlink-mysql
+
+  template:
+    metadata:
+      labels:
+        app: shortlink-mysql
+
+    spec:
+      containers:
+        - name: shortlink-mysql
+          image: mysql:latest
+          ports:
+            - containerPort: 3306
+          env:
+            - name: MYSQL_ROOT_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: shortlink-mysql-secret
+                  key: root-password
+
+            - name: MYSQL_DATABASE
+              valueFrom:
+                secretKeyRef:
+                  name: shortlink-mysql-secret
+                  key: database
+
+            - name: MYSQL_USER
+              valueFrom:
+                secretKeyRef:
+                  name: shortlink-mysql-secret
+                  key: username
+
+            - name: MYSQL_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: shortlink-mysql-secret
+                  key: password
+
+          volumeMounts:
+            - name: mysql-storage
+              mountPath: /var/lib/mysql
+
+      volumes:
+        - name: mysql-storage
+          persistentVolumeClaim:
+            claimName: shortlink-mysql-pvc

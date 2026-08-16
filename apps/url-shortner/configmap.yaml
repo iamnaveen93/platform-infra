@@ -1,0 +1,13 @@
+apiVersion: v1
+kind: ConfigMap
+
+metadata:
+  name: url-shortner-config
+  namespace: url-shortner
+
+data:
+  DB_HOST: shortlink-mysql
+  DB_PORT: "3306"
+  DB_NAME: shortlink_db
+  REDIS_HOST: shortlink-redis
+  REDIS_PORT: "6379"

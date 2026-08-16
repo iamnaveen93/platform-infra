@@ -1,0 +1,26 @@
+apiVersion: apps/v1
+kind: Deployment
+
+metadata:
+  name: shortlink-redis
+  namespace: url-shortner
+
+spec:
+  replicas: 1
+
+  selector:
+    matchLabels:
+      app: shortlink-redis
+
+  template:
+    metadata:
+      labels:
+        app: shortlink-redis
+
+    spec:
+      containers:
+        - name: shortlink-redis
+          image: redis:latest
+
+          ports:
+            - containerPort: 6379
